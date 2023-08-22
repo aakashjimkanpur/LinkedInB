@@ -1,5 +1,5 @@
 const userModel = require("../Model/userModel");
-const bcryptjs = require("bcryptjs"); //bcyptjs use instead of bcrypt due to vercel deploy
+const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const newUser = (req, res) => {
   const { name, email, password } = req.body;
@@ -33,7 +33,7 @@ const logoutUser = (req, res) => {
   const authData = authorization ? authorization.split(" ") : [];
   const token = authData[1];
   // console.log("Authorized: " + authorization);
-  const userInfo = jwt.verify(token, process.env.SECRET_KEY);
+  const userInfo = jwt.verify(token, "newton_School_Linkedin");
   userModel
     .findByIdAndUpdate(userInfo.id, { isLogin: false })
     .then((data) => {
@@ -58,7 +58,7 @@ const loginUser = (req, res) => {
             // console.log(resp);
             const token = jwt.sign(
               { id: resp._id, name: resp.name, email: resp.email },
-              process.env.SECRET_KEY
+              "newton_School_Linkedin"
             );
             res.status(200).json({
               id: resp._id,
